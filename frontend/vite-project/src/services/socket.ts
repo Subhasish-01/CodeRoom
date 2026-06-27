@@ -1,6 +1,7 @@
 import {io} from "socket.io-client";
+import { BACKEND_URL } from "../config";
 export const socket = io(
-    "http://localhost:3000",{
+    BACKEND_URL,{
          autoConnect: false,
     auth: {
         token: sessionStorage.getItem("token")
