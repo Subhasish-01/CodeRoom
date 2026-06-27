@@ -23,3 +23,6 @@ Thumbs.db
 
 # Coverage
 coverage/
+
+# TypeScript build info
+*.tsbuildinfo
