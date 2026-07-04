@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 import type { DesktopRoomProps } from './DesktopRoom';
 import { socket } from '../services/socket';
 import { Button } from '../components/Button';
@@ -6,12 +6,16 @@ import Editor from "@monaco-editor/react";
 import { MenuIcon } from '../assets/Menu';
 import { ChatIcon } from '../assets/Chat';
 import { ArrowLeftIcon } from '../assets/ArrowLeft';
+import type * as monaco from "monaco-editor";
+
 
 export function MobileRoom({roomId,code,language,isRunning,setCode,setLanguage,runCode
     ,users,copyRoomId,leaveRoom,messages,message,setMessage,sendMessage,currentUser,messageEndRef,setInput,input,output
 }:DesktopRoomProps){
     const [view,setView] = useState<"editor" | "chat">("editor");
 
+const editorRef =
+    useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
     const [showSidebar,setShowSidebar]=useState(false);
     return(
         <>
@@ -62,7 +66,20 @@ export function MobileRoom({roomId,code,language,isRunning,setCode,setLanguage,r
                             roomId
                            
                         }))
-                    }}/>
+                    }}  onMount={(editor)=>{
+                                            editorRef.current=editor;
+                                             editor.onDidChangeCursorPosition((e)=>{
+                    
+                                                socket.emit(
+                                                    "cursor-change",
+                                                    JSON.stringify({
+                                                        roomId,
+                                                        cursor:e.position
+                                                    })
+                                                );
+                    
+                                            });
+                        }}/>
                     </div>
                     <div className="border-t border-slate-700 bg-slate-950 p-3 space-y-3 h-64 overflow-y-auto hide-scrollbar">
                         <div>

@@ -1,6 +1,6 @@
 import { Input } from "../components/Input"
 import { Button } from "../components/Button"
-import {useRef} from 'react'
+import {useRef, useState} from 'react'
 import axios from 'axios'
 import { BACKEND_URL } from "../config";
 import {useNavigate} from 'react-router-dom'
@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 export function Signup(){
    const usernameRef=useRef<HTMLInputElement>(null);
    const passwordRef=useRef<HTMLInputElement>(null);
+   const [isLoading, setIsLoading] = useState(false);
    const navigate=useNavigate();
     async function signup(){
         const username=usernameRef.current?.value;
@@ -17,6 +18,7 @@ export function Signup(){
             toast.error("Please fill all fields");
             return;
          }
+          setIsLoading(true);
         try{
           await axios.post(`${BACKEND_URL}/signup`,{
             username,
@@ -27,6 +29,8 @@ export function Signup(){
         }catch(error){
           toast.error("Signup failed");
           console.log(error);
+        }finally {
+            setIsLoading(false);
         }
     }
 
@@ -42,11 +46,11 @@ export function Signup(){
           </p>
               <div className="flex flex-col gap-4">
                 <Input inputref={usernameRef} placeholder="Username"></Input>
-                <Input inputref={passwordRef} placeholder="Password"></Input>
+                <Input inputref={passwordRef} type={"password"} placeholder="Password"></Input>
               </div>
               <div  className = " pt-4">
                 <div className="flex justify-center items-col">
-                <Button onClick={signup} varient="primary" text="Signup" size="md"/>
+                <Button onClick={signup} varient="primary"  text={isLoading ? "Signing Up..." : "Sign Up"} size="md"/>
                 </div>
                 <div className="mt-6 text-center text-sm text-slate-600">
                     Already have an account?{" "}

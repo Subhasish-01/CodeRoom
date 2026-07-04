@@ -19,6 +19,7 @@ export function Signin(){
             toast.error("Please fill all fields");
             return;
          }
+         setIsLoading(true);
         try{
          const response= await axios.post(`${BACKEND_URL}/signin`,{
             username,
@@ -53,7 +54,7 @@ export function Signin(){
                     Sign in to continue collaborating in CodeRoom.
                 </p>
                 <Input inputref={usernameRef} placeholder="Username"></Input>
-                <Input inputref={passwordRef} placeholder="Password"></Input>
+                <Input inputref={passwordRef} type={"password"} placeholder="Password"></Input>
               </div>
               <div  className = "pt-4">
                 <div className="flex justify-center items-center">

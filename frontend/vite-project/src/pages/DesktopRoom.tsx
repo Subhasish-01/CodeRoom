@@ -3,7 +3,10 @@ import Editor from "@monaco-editor/react";
 import type {RefObject} from 'react'
 import { socket } from '../services/socket';
 import { MenuIcon } from '../assets/Menu';
-import{useState} from "react"
+import{useState} from "react";
+import { useRef } from "react";
+import type * as monaco from "monaco-editor";
+
 interface Message {
     sender: string;
     message: string;
@@ -42,6 +45,9 @@ export function DesktopRoom({roomId,users, currentUser,messages,code,input, outp
     copyRoomId, leaveRoom,messageEndRef
 }:DesktopRoomProps){
     const [showSidebar,setShowSidebar]=useState(false);
+    
+const editorRef =
+    useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
     return (
          <div className="h-screen overflow-hidden bg-slate-900 flex">
         <div className={`w-72 bg-slate-950 border-r border-slate-700 flex flex-col transition-transform duration-300 ease-in-out
@@ -131,7 +137,20 @@ export function DesktopRoom({roomId,users, currentUser,messages,code,input, outp
                     socket.emit("clear-output",JSON.stringify({
                         roomId
                     }))
-                }}/>
+                }}  onMount={(editor)=>{
+                        editorRef.current=editor;
+                         editor.onDidChangeCursorPosition((e)=>{
+
+                            socket.emit(
+                                "cursor-change",
+                                JSON.stringify({
+                                    roomId,
+                                    cursor:e.position
+                                })
+                            );
+
+                        });
+                    }}/>
             </div>
             <div className="flex-2 min-h-0 p-4 flex flex-col">
                 <div className="flex-1 border border-slate-700 rounded-lg p-4 overflow-y-auto mb-4 min-h-0 hide-scrollbar">

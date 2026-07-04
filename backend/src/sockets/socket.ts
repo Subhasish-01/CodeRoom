@@ -181,6 +181,13 @@ export const initializeSocket = (io:Server)=>{
         }
     })
 
+    socket.on("cursor-change", ({ roomId, cursor }) => {
+      socket.to(roomId).emit("cursor-change", {
+            socketId: socket.id,
+            cursor
+        });
+    });
+
      socket.on("disconnect", () => {
 
     const user =
