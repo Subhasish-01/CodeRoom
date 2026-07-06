@@ -75,7 +75,7 @@ export function Home(){
         navigate("/signin");
     }
     return (
-        <div className="min-h-screen bg-slate-900 flex justify-center items-center px-4 sm:px-6 lg:px-8 py-8">
+        <div className="min-h-dvh bg-slate-900 flex justify-center items-center px-4 sm:px-6 lg:px-8 py-8">
             <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 sm:p-8">
                  <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 text-center mb-2">
                     CodeRoom

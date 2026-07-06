@@ -5,7 +5,7 @@ export function Landing() {
     const navigate = useNavigate();
 
     return (
-        <div className="relative min-h-screen overflow-hidden bg-linear-to-br from-slate-950 via-slate-900 to-violet-950">
+        <div className="relative min-h-dvh overflow-hidden bg-linear-to-br from-slate-950 via-slate-900 to-violet-950">
              
             <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-violet-600/20 blur-[120px] animate-pulse"></div>
 
